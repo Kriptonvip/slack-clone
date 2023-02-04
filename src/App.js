@@ -1,16 +1,29 @@
 import React from 'react';
 import { Routes, Route } from 'react-router-dom';
-import Header from './Header';
+import Header from './app/components/Header';
+import SideBar from './app/components/SideBar';
+import styled from 'styled-components';
+
 // import { Counter } from './features/counter1/Counter';
 
 function App() {
   return (
-    <div>
+    <div className="app">
+      <Header />
+      <AppBody>
+        <SideBar />
         <Routes>
-          <Route path="/" element={<Header/>}/>  
+          <Route path="/" exact />
+          {/* Chat */}
         </Routes>
+      </AppBody>
     </div>
   );
 }
 
 export default App;
+
+const AppBody = styled.div`
+  display: flex;
+  height: 100vh;
+`;
