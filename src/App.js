@@ -3,6 +3,8 @@ import { Routes, Route } from 'react-router-dom';
 import Header from './app/components/Header';
 import SideBar from './app/components/SideBar';
 import styled from 'styled-components';
+import Chat from './app/components/Chat';
+
 
 // import { Counter } from './features/counter1/Counter';
 
@@ -14,8 +16,9 @@ function App() {
         <SideBar />
         <Routes>
           <Route path="/" exact />
-          {/* Chat */}
+          
         </Routes>
+        <Chat/>
       </AppBody>
     </div>
   );

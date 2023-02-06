@@ -16,19 +16,30 @@ import {
 import CreateIcon from '@mui/icons-material/Create';
 import SideBarOption from './SideBarOption';
 import { db } from '../../firebase';
-import { collection, getDocs } from 'firebase/firestore';
+import { collection, getDocs, addDoc } from 'firebase/firestore';
 
 function SideBar() {
-  const [channels, setchannels] = useState([]);
+  const [channels, setChannels] = useState([]);
+  const [newChannel, setNewChannel] = useState('');
   const roomsCollectionRef = collection(db, 'rooms');
+  // console.log(roomsCollectionRef)
   useEffect(() => {
     const getRooms = async () => {
       const data = await getDocs(roomsCollectionRef);
-      setchannels(data.docs.map((doc) => ({ ...doc.data(), id: doc.id })));
+      setChannels(data.docs.map((doc) => ({ ...doc.data(), id: doc.id })));
     };
-
     getRooms();
-  }, [roomsCollectionRef]);
+  }, [newChannel]);
+  
+  const addChannel = () => {
+    // const channelName =
+    const channel = prompt('Please enter the channel name');
+    setNewChannel(channel);
+    if (channel) {
+      addDoc(roomsCollectionRef, { name: channel });
+    }
+    console.log(newChannel, 'newChannel')
+  };
 
   return (
     <SideBarContainer>
@@ -53,7 +64,7 @@ function SideBar() {
       <hr />
       <SideBarOption Icon={ExpandMore} title="Channels" />
       <hr />
-      <SideBarOption Icon={Add} addChannelOption roomsCollectionRef title="Add channel" />
+      <SideBarOption Icon={Add} addChannelOption addChannel={addChannel} title="Add channel" />
       {channels.map((channel) => (
         <SideBarOption key={channel.id} id={channel.id} title={channel.name} />
       ))}
