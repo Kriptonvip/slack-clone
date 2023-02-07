@@ -4,22 +4,32 @@ import Header from './app/components/Header';
 import SideBar from './app/components/SideBar';
 import styled from 'styled-components';
 import Chat from './app/components/Chat';
-
+import { useAuthState } from 'react-firebase-hooks/auth';
+import { auth } from './firebase';
+import Login from './app/components/Login';
 
 // import { Counter } from './features/counter1/Counter';
 
 function App() {
+  const [user, loading] = useAuthState(auth);
+  console.log(user);
   return (
     <div className="app">
-      <Header />
-      <AppBody>
-        <SideBar />
-        <Routes>
-          <Route path="/" exact />
-          
-        </Routes>
-        <Chat/>
-      </AppBody>
+      
+        {!user ? (
+          <Routes>
+          <Route path="/" element={<Login/>}></Route>
+          </Routes>
+        ) : (
+          <>
+            <Header />
+            <AppBody>
+              <SideBar />
+              <Chat />
+            </AppBody>
+          </>
+        )}
+
     </div>
   );
 }

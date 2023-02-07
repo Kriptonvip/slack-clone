@@ -1,60 +1,66 @@
-import React from 'react'
+import React from 'react';
 import styled from 'styled-components';
 import { Avatar } from '@mui/material';
 import AccessTimeIcon from '@mui/icons-material/AccessTime';
-import SearchIcon from '@mui/icons-material/Search'
-import HelpOutlineIcon from '@mui/icons-material/HelpOutline'
+import SearchIcon from '@mui/icons-material/Search';
+import HelpOutlineIcon from '@mui/icons-material/HelpOutline';
+import { auth } from '../../firebase';
+import { useAuthState } from 'react-firebase-hooks/auth';
 
 function Header() {
+  const [user] = useAuthState(auth);
   return (
     <HeaderContainer>
       <HeaderLeft>
         <HeaderAvatar
-        // todo ass onclick
-        />     
-        <AccessTimeIcon/>
+          onClick={() => auth.signOut()}
+          alt={user && user.displayName}
+          src={user && user.photoURL}
+          // todo ass onclick
+        />
+        <AccessTimeIcon />
       </HeaderLeft>
       <HeaderSearch>
-        <SearchIcon/>
-          <input placeholder='Slack search'></input>
-        </HeaderSearch>
+        <SearchIcon />
+        <input placeholder="Slack search"></input>
+      </HeaderSearch>
       <HeaderRight>
-        <HelpOutlineIcon/>
+        <HelpOutlineIcon />
       </HeaderRight>
     </HeaderContainer>
-  )
+  );
 }
 
 export default Header;
 const HeaderSearch = styled.div`
-flex:0.4;
-opacity: 1;
-border-radius: 6px;
-background-color: #421f44;
-text-align: center;
-display: flex;
-padding: 0 50px;
-color: gray;
-border: 1px solid gray;
- > input {
-  background-color: transparent;
-  border: none;
+  flex: 0.4;
+  opacity: 1;
+  border-radius: 6px;
+  background-color: #421f44;
   text-align: center;
-  min-width: 30vw;
-  outline: 0;
-  color: white;
- }
-`
+  display: flex;
+  padding: 0 50px;
+  color: gray;
+  border: 1px solid gray;
+  > input {
+    background-color: transparent;
+    border: none;
+    text-align: center;
+    min-width: 30vw;
+    outline: 0;
+    color: white;
+  }
+`;
 
 const HeaderContainer = styled.div`
-display: flex;
-position: fixed;
-width: 100%;
- align-items: center;
- justify-content: space-between;
- padding: 10px 0;
- background-color: var(--slack-color);
- color: white;
+  display: flex;
+  position: fixed;
+  width: 100%;
+  align-items: center;
+  justify-content: space-between;
+  padding: 10px 0;
+  background-color: var(--slack-color);
+  color: white;
 `;
 
 const HeaderLeft = styled.div`
@@ -66,8 +72,8 @@ const HeaderLeft = styled.div`
     margin-left: auto;
     margin-right: 30px;
   }
-  `;
-  const HeaderAvatar = styled(Avatar)`
+`;
+const HeaderAvatar = styled(Avatar)`
   cursor: pointer;
   :hover {
     opacity: 0.8;
@@ -81,6 +87,4 @@ const HeaderRight = styled.div`
     margin-left: auto;
     margin-right: 20px;
   }
-  `;
-
-
+`;

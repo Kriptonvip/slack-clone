@@ -13,8 +13,8 @@ function Chat() {
   const chatRef = useRef(null);
   const roomId = useSelector(selectRoomId);
   const roomMessagesRef = collection(db, `rooms/${roomId}/messages`);
-  const [messages] = useCollectionData(roomId && query(roomMessagesRef, orderBy("timestamp", "asc"))
-  );
+  const OrderedMessages = query(roomMessagesRef, orderBy('timestamp', 'asc'));
+  const [messages] = useCollectionData(roomId && OrderedMessages);
   const roomsCollectionRef = doc(db, `rooms/${roomId}`);
   const [room, loading] = useDocument(roomId && roomsCollectionRef);
 

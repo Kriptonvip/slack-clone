@@ -1,28 +1,26 @@
 import { Button } from '@mui/material';
-import { doc, setDoc} from 'firebase/firestore';
+import { doc, setDoc } from 'firebase/firestore';
 import React, { useRef } from 'react';
 import styled from 'styled-components';
-import { db } from '../../firebase';
+import { auth, db } from '../../firebase';
 import { serverTimestamp } from 'firebase/firestore';
+import { useAuthState } from 'react-firebase-hooks/auth';
 
 function ChatInput({ channelName, channelId, chatRef }) {
   const inputRef = useRef(null);
-
+  const [user] = useAuthState(auth);
   const sendMessage = async (e) => {
     e.preventDefault();
     if (!channelId || inputRef.current.value === '') {
       return false;
     }
-    const messageId = "id" + Math.random().toString(16).slice(2);
-    const messagesRef = doc(
-      db,
-      `rooms/${channelId}/messages/${messageId}`
-    );
+    const messageId = 'id' + Math.random().toString(16).slice(2);
+    const messagesRef = doc(db, `rooms/${channelId}/messages/${messageId}`);
     await setDoc(messagesRef, {
       message: inputRef.current.value,
       timestamp: serverTimestamp(),
-      user: 'Roman',
-      userImage:'https://rttf.ru/public/img/players/56821/avatar.jpeg'
+      user: user.displayName,
+      userImage: user.photoURL,
     });
 
     chatRef &&
