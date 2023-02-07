@@ -5,7 +5,7 @@ import styled from 'styled-components';
 import { selectRoomId } from '../../features/appSlice';
 import ChatInput from './ChatInput';
 import { useCollectionData, useDocument } from 'react-firebase-hooks/firestore';
-import { collection, doc } from 'firebase/firestore';
+import { collection, doc, orderBy, query } from 'firebase/firestore';
 import { db } from '../../firebase';
 import Message from './Message';
 
@@ -13,14 +13,14 @@ function Chat() {
   const chatRef = useRef(null);
   const roomId = useSelector(selectRoomId);
   const roomMessagesRef = collection(db, `rooms/${roomId}/messages`);
-  const [messages] = useCollectionData(roomId && roomMessagesRef);
+  const [messages] = useCollectionData(roomId && query(roomMessagesRef, orderBy("timestamp", "asc"))
+  );
   const roomsCollectionRef = doc(db, `rooms/${roomId}`);
   const [room, loading] = useDocument(roomId && roomsCollectionRef);
 
-  const timeSort = (x, y) => x.timestamp - y.timestamp;
-
   useEffect(() => {
-    chatRef && chatRef.current && 
+    chatRef &&
+      chatRef.current &&
       chatRef.current.scrollIntoView({
         behavior: 'smooth',
       });
@@ -46,19 +46,18 @@ function Chat() {
             </HeaderRigth>
           </Header>
           <ChatMessages>
-            {
-              messages.sort(timeSort).map((item, index) => {
-                const { message, timestamp, user, userImage } = item;
-                return (
-                  <Message
-                    key={index}
-                    message={message}
-                    timestamp={timestamp}
-                    user={user}
-                    userImage={userImage}
-                  />
-                );
-              })}
+            {messages.map((item, index) => {
+              const { message, timestamp, user, userImage } = item;
+              return (
+                <Message
+                  key={index}
+                  message={message}
+                  timestamp={timestamp}
+                  user={user}
+                  userImage={userImage}
+                />
+              );
+            })}
             <ChatBottom ref={chatRef} />
           </ChatMessages>
           <ChatInput
