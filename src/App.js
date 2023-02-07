@@ -11,8 +11,7 @@ import Login from './app/components/Login';
 // import { Counter } from './features/counter1/Counter';
 
 function App() {
-  const [user, loading] = useAuthState(auth);
-  console.log(user);
+  const [user] = useAuthState(auth);
   return (
     <div className="app">
       
