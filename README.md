@@ -2,7 +2,7 @@
 ## build with REACT.JS, REDUX, Styled components & Firebase Hooks.
 ## It's work with Google Authentication.
 
-### You can try chat on [here](https://slack-clone-1bbc5.web.app/)
+### You can try chat app [here](https://slack-clone-1bbc5.web.app/)
 
 ## Available Scripts
 
